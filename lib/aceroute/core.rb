@@ -7,7 +7,7 @@ module Aceroute
   debug_output $stdout
   attr_accessor :http_result
 
-  base_uri http://air.aceroute.com
+  base_uri 'http://air.aceroute.com'
   @@API_KEY = ENV['ACEROUTE_API_TOKEN']
 
   @@query_params = {
@@ -51,16 +51,14 @@ module Aceroute
 
 
   def self.create_location(location)
-    recs = "<data>
-          <loc>
-            <id>#{location[:id]}</id>
-            <cid>#{location[:customer][:cid]}</cid>
-            <nm>#{location[:description]}</nm>
-            <adr>#{location[:address1]}</adr>
-            <adr2>#{location[:address2]}</adr2>
-          </loc>
-        </data>"
-    self.call_api("customer.location.save", recs)
+    recs = "<data><loc><id>#{location[:id]}</id>
+      <cid>#{location[:customer][:cid]}</cid>
+      <nm>#{location[:description]}</nm>
+      <adr>#{location[:address1]}</adr>
+      <adr2>#{location[:address2]}</adr2>
+      </loc></data>"
+    data = self.call_api("customer.location.save", recs)
+    loc = data.loc
   end
 
 
