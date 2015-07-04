@@ -45,7 +45,7 @@ module Aceroute
 
   def self.delete_customer(customer_id)
     recs = "<data><del><id>#{customer_id}</id></del></data>"
-    self.call_api("customer.delete")
+    self.call_api("customer.delete", recs)
   end
 
 
@@ -65,7 +65,42 @@ module Aceroute
 
   def self.delete_location(location_id)
     recs = "<data><del><id>#{location_id}</id></del></data>"
-    self.call_api("customer.location.delete", recs)
+    types = self.call_api("customer.location.delete", recs).otype
+  end
+
+
+  def self.list_order_types
+    self.call_api("order.type.list", nil)
+  end
+
+  def self.list_service_types
+    self.call_api("product.type.list", nil)
+  end
+
+
+  def self.list_workers
+    workers = self.call_api("worker.list", nil).res
+  end
+
+  def self.list_orders
+    workers = self.call_api("order.list", nil).event
+  end
+
+
+  def self.create_order(order)
+    recs = "<data><event>
+      <cid>#{order[:customer][:cid]}</cid>
+      <lid>#{order[:customer][:location_id]}</lid>
+      <cntid>#{order[:customer][:contact_id]}</cntid>
+      <rid>#{order[:worker_id]}</rid><tid>#{order[:type_id]}</tid>
+      <pid>1</pid><dur>#{order[:duration]}</dur>
+      <start_epoch>#{order[:start_time_epoch]}</start_epoch>
+      <nm>#{order[:name]}</nm><dtl>#{order[:summary]}</dtl>
+      <po>po59</po><inv>invoice 1</inv>
+      <note>order notes</note><schd>1</schd>
+      </event></data>"
+      puts recs
+      order = self.call_api("order.create", recs)
   end
 
 
