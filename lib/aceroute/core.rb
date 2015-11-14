@@ -130,7 +130,7 @@ module Aceroute
             <note>#{order[:note]}</note>
           </event>
         </data>"
-    self.call_api("order.save", recs)
+    self.call_api("order.create", recs)
   end
 
 
