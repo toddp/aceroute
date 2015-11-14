@@ -71,6 +71,40 @@ module Aceroute
   end
 
 
+  def self.create_order(order)
+    #required:
+    #  cid (customer id)
+    #  nm ('name' descriptive field)
+    #  dur (order duration in minutes, 5 min increments)
+    #  sched (1 = scheduled, 0 = unscheduled)
+    #  start_epoch (time in msec)
+
+    recs = "<data>
+          <event>
+            <cid>#{order[:cid]}</cid>
+            <nm>#{order[:description]}</nm>
+            <dur>#{order[:dur]}</dur>
+            <sched>#{order[:sched]}</sched>
+            <start_epoch>#{order[:start_epoch]}</start_epoch>
+            <lid>#{order[:lid]}</lid>
+            <cntid>#{order[:cntid]}</cntid>
+            <rid>#{order[:rid]}</rid>
+            <tid>#{order[:tid]}</tid>
+            <pid>#{order[:pid]}</pid>
+            <dtl>#{order[:dtl]}</dtl>
+            <po>#{order[:po]}</po>
+            <inv>#{order[:inv]}</inv>
+            <note>#{order[:note]}</note>
+          </event>
+        </data>"
+    self.call_api("order.save", recs)
+  end
+  end
+
+  def self.delete_order(order_id)
+    recs = "<data><del><id>#{order_id}</id></del></data>"
+    self.call_api("order.delete", recs)
+  end
 
   def self.call_api(method, recs)
     params = @@query_params.merge!({method: method})
