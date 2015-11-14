@@ -115,7 +115,7 @@ module Aceroute
     recs = "<data>
           <event>
             <cid>#{order[:cid]}</cid>
-            <nm>#{order[:description]}</nm>
+            <nm>#{order[:nm]}</nm>
             <dur>#{order[:dur]}</dur>
             <sched>#{order[:sched]}</sched>
             <start_epoch>#{order[:start_epoch]}</start_epoch>
