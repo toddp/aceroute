@@ -132,7 +132,7 @@ module Aceroute
         </data>"
     self.call_api("order.save", recs)
   end
-  end
+
 
   def self.delete_order(order_id)
     recs = "<data><del><id>#{order_id}</id></del></data>"
