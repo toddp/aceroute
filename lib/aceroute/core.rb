@@ -87,7 +87,7 @@ module Aceroute
   end
 
 
-  def self.create_order(order)
+  def self.create_order_old(order)
     recs = "<data><event>
       <cid>#{order[:customer][:cid]}</cid>
       <lid>#{order[:customer][:location_id]}</lid>
@@ -100,7 +100,7 @@ module Aceroute
       <note>order notes</note><schd>1</schd>
       </event></data>"
       puts recs
-      order = self.call_api("order.create", recs)
+      data = self.call_api("order.create", recs)
   end
 
 
@@ -130,7 +130,10 @@ module Aceroute
             <note>#{order[:note]}</note>
           </event>
         </data>"
-    self.call_api("order.create", recs)
+    puts recs
+    data = self.call_api("order.create", recs)
+    puts data
+    order = data.order
   end
 
 
