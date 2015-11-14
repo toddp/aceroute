@@ -117,14 +117,14 @@ module Aceroute
             <cid>#{order[:cid]}</cid>
             <nm>#{order[:nm]}</nm>
             <dur>#{order[:dur]}</dur>
-            <sched>#{order[:sched]}</sched>
+            <schd>#{order[:schd]}</schd>
             <start_epoch>#{order[:start_epoch]}</start_epoch>
           </event>
         </data>"
     puts recs
     data = self.call_api("order.create", recs)
     puts data
-    order = data.order
+    order = data.event
   end
 
 
