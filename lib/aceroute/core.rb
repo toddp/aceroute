@@ -119,15 +119,6 @@ module Aceroute
             <dur>#{order[:dur]}</dur>
             <sched>#{order[:sched]}</sched>
             <start_epoch>#{order[:start_epoch]}</start_epoch>
-            <lid>#{order[:lid]}</lid>
-            <cntid>#{order[:cntid]}</cntid>
-            <rid>#{order[:rid]}</rid>
-            <tid>#{order[:tid]}</tid>
-            <pid>#{order[:pid]}</pid>
-            <dtl>#{order[:dtl]}</dtl>
-            <po>#{order[:po]}</po>
-            <inv>#{order[:inv]}</inv>
-            <note>#{order[:note]}</note>
           </event>
         </data>"
     puts recs
