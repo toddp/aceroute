@@ -7,7 +7,7 @@ module Aceroute
   debug_output $stdout
   attr_accessor :http_result
 
-  base_uri http://air.aceroute.com
+  base_uri 'http://air.aceroute.com'
   @@API_KEY = ENV['ACEROUTE_API_TOKEN']
 
   @@query_params = {
@@ -45,29 +45,62 @@ module Aceroute
 
   def self.delete_customer(customer_id)
     recs = "<data><del><id>#{customer_id}</id></del></data>"
-    self.call_api("customer.delete")
+    self.call_api("customer.delete", recs)
   end
 
 
 
   def self.create_location(location)
-    recs = "<data>
-          <loc>
-            <id>#{location[:id]}</id>
-            <cid>#{location[:customer][:cid]}</cid>
-            <nm>#{location[:description]}</nm>
-            <adr>#{location[:address1]}</adr>
-            <adr2>#{location[:address2]}</adr2>
-          </loc>
-        </data>"
-    self.call_api("customer.location.save", recs)
+    recs = "<data><loc><id>#{location[:id]}</id>
+      <cid>#{location[:customer][:cid]}</cid>
+      <nm>#{location[:description]}</nm>
+      <adr>#{location[:address1]}</adr>
+      <adr2>#{location[:address2]}</adr2>
+      </loc></data>"
+    data = self.call_api("customer.location.save", recs)
+    loc = data.loc
   end
 
 
 
   def self.delete_location(location_id)
     recs = "<data><del><id>#{location_id}</id></del></data>"
-    self.call_api("customer.location.delete", recs)
+    types = self.call_api("customer.location.delete", recs).otype
+  end
+
+
+  def self.list_order_types
+    self.call_api("order.type.list", nil)
+  end
+
+  def self.list_service_types
+    self.call_api("product.type.list", nil)
+  end
+
+
+  def self.list_workers
+    workers = self.call_api("worker.list", nil).res
+  end
+
+  def self.list_orders
+    workers = self.call_api("order.list", nil).event
+  end
+
+
+  def self.create_order(order)
+    recs = "<data><event>
+      <cid>#{order[:customer][:cid]}</cid>
+      <lid>#{order[:customer][:location_id]}</lid>
+      <cntid>#{order[:customer][:contact_id]}</cntid>
+      <rid>#{order[:worker_id]}</rid><tid>#{order[:type_id]}</tid>
+      <pid>1</pid><dur>#{order[:duration]}</dur>
+      <start_epoch>#{order[:start_time_epoch]}</start_epoch>
+      <nm>#{order[:name]}</nm><dtl>#{order[:summary]}</dtl>
+      <po>po59</po><inv>invoice 1</inv>
+      <note>order notes</note><schd>1</schd>
+      </event></data>"
+      puts recs
+      order = self.call_api("order.create", recs)
   end
 
 
