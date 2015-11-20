@@ -119,6 +119,11 @@ module Aceroute
             <dur>#{order[:dur]}</dur>
             <schd>#{order[:schd]}</schd>
             <start_epoch>#{order[:start_epoch]}</start_epoch>
+            <lid>#{order[:lid]}</lid>
+            <cntid>#{order[:cntid]}</cntid>
+            <rid>#{order[:rid]}</rid>
+            <dtl>#{order[:dtl]}</dtl>
+            <po>#{order[:po]}</po>
           </event>
         </data>"
     puts recs
