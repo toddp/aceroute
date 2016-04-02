@@ -32,27 +32,7 @@ api key:
     export ACEROUTE_API_TOKEN=mytoken
 
 
-The following methods are currently available: 
-
-* Aceroute::list_customers
-* Aceroute::create_customer
-* Aceroute::delete_customer
-* Aceroute::create_location
-* Aceroute::delete_location
-
-To create a customer, pass in a hash containing the required customer data. 
-
-    john = {:name=>"John Smith", :email=>"john@example.com", :address=>{:description=>"Home", :address1=>"123 Fake Street", :address2=>"Springfield MO 12345", :phone=>"555-1212"}}
-
-    Aceroute::create_customer(john)
-
-
-To delete a customer, pass in the aceroute id assigned when you created it.
-
-    Aceroute::delete_customer('11520001')
-
-
-
+See the documentation on [Aceroute class methods](doc/Aceroute.html) for which ones you can call.
 
 
 
