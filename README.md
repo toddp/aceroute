@@ -32,7 +32,7 @@ api key:
     export ACEROUTE_API_TOKEN=mytoken
 
 
-See the documentation on [Aceroute class methods](doc/Aceroute.html) for which ones you can call.
+See the documentation on [Aceroute class methods](http://toddp.github.io/aceroute/) for which ones you can call.
 
 
 
