@@ -1,6 +1,8 @@
 require 'rubygems'
 require 'httparty'
 require 'aceroute/hashit'
+require 'aceroute/customer'
+require 'aceroute/address'
 
 module Aceroute
   include HTTParty
@@ -19,7 +21,19 @@ module Aceroute
   # List all customers
   # @return [Hash] list of customer objects
   def self.list_customers
-    self.call_api("customer.list", nil)
+    customers = []
+    res = self.call_api("customer.list", nil)
+    res.cnts.cnt.each do |r|
+      #binding.pry
+      c = Customer.new(r)
+      customers << c
+      #find corresponding addresses for this customer
+      addresses = res.locs.loc.find_all{|l| l["cid"] == c.cid }
+      addresses.each do |a|
+        c.addresses << Address.new(a)
+      end
+    end
+    customers
   end
 
 
@@ -122,12 +136,12 @@ module Aceroute
 
   # Create new order
   # @param order [Hash]
-  #   * :cid (Integer) Aceroute customer id 
+  #   * :cid (Integer) Aceroute customer id
   #   * :nm (String) 'name', descriptive field for this order
   #   * :dir (Integer) 'duration', in 5 minute increments
   #   * :sched (Integer) 1 = scheduled, 0 = unscheduled
   #   * :start_epoch (Integer) time in msec since epoch
-  #   * :lid (Integer) optional -- customer location id 
+  #   * :lid (Integer) optional -- customer location id
   #   * :cntid (Integer) optional -- customer contact id
   #   * :rid (Integer) optional -- worker id, to assign this order to a specific worker
   #   * :dtl (String) optional -- order summary
@@ -171,7 +185,7 @@ private
     data = Hashit.new(http_result['data'])
   end
 
-
+#FIXME: DELETE
   def self.create_order_old(order)
     recs = "<data><event>
       <cid>#{order[:customer][:cid]}</cid>
