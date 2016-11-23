@@ -24,7 +24,6 @@ module Aceroute
     customers = []
     res = self.call_api("customer.list", nil)
     res.cnts.cnt.each do |r|
-      #binding.pry
       c = Customer.new(r)
       customers << c
       #find corresponding addresses for this customer
@@ -183,23 +182,6 @@ private
     http_result = self.get("/api", options).parsed_response
     puts http_result
     data = Hashit.new(http_result['data'])
-  end
-
-#FIXME: DELETE
-  def self.create_order_old(order)
-    recs = "<data><event>
-      <cid>#{order[:customer][:cid]}</cid>
-      <lid>#{order[:customer][:location_id]}</lid>
-      <cntid>#{order[:customer][:contact_id]}</cntid>
-      <rid>#{order[:worker_id]}</rid><tid>#{order[:type_id]}</tid>
-      <pid>1</pid><dur>#{order[:duration]}</dur>
-      <start_epoch>#{order[:start_time_epoch]}</start_epoch>
-      <nm>#{order[:name]}</nm><dtl>#{order[:summary]}</dtl>
-      <po>po59</po><inv>invoice 1</inv>
-      <note>order notes</note><schd>1</schd>
-      </event></data>"
-      puts recs
-      data = self.call_api("order.create", recs)
   end
 
 end

@@ -10,9 +10,6 @@ class Address
   end
 
 
-
-
-
   # @return Aceroute location object
   def create!
     recs = "<data><loc><id>0</id>
@@ -42,8 +39,6 @@ class Address
       send("#{name[1..-1]}=", hashit.instance_variable_get(name))
     end
   end
-
-
 
 
 end
