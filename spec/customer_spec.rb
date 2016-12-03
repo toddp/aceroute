@@ -4,8 +4,8 @@ describe Aceroute::Customer do
 
 describe "create a new Customer" do
   before :all do
-    @name =  "Foo"
-    @email = "foo@bar.com",
+    @name =  "Bob Smith"
+    @email = "bob@example.com",
     @location =
              {address1: "123 fake st",
               address2: "Apt B",

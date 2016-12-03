@@ -27,7 +27,6 @@ module Aceroute
   def self.list_customers
     customers = []
     res = self.call_api("customer.list", nil)
-    binding.pry
     res.cnts.cnt.each do |r|
       c = Aceroute::Customer.new(name: r['nm'], email: r['eml'],
         cid: r['cid'])
@@ -35,7 +34,6 @@ module Aceroute
       #find corresponding addresses for this customer
       locations = res.locs.loc.find_all{|l| l["cid"] == c.cid }
       locations.each do |a|
-        binding.pry
         c.locations << Aceroute::Location.new(address1: a['adr'], address2: a['adr2'],
           phone: a['tel'], description: a['nm'])
       end

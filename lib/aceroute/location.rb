@@ -9,6 +9,7 @@ class Location
 
 
   def initialize(address1, address2, description, name, phone, cid = nil, id= nil)
+    binding.pry
     #create getters/setters for each param
     #attrs.each do |name,value|
     #  singleton_class.class_eval {attr_accessor "#{name}"}
@@ -39,12 +40,16 @@ class Location
   end
 
 
-  def destroy!
-    req = "<data><del><id>#{self.id}</id></del></data>"
+  def destroy!(id = nil)
+    Location.delete(id ? id : self.cid)
+  end
+
+
+  def self.delete(id)
+    req = "<data><del><id>#{id}</id></del></data>"
     ret = Aceroute::call_api("customer.location.delete", req)
     ret.success == "true" ? true : false  #maybe raise error here instead
   end
-
 
   #private
   #takes a Hashit class, extracts the instance variables, and sets them on our Customer

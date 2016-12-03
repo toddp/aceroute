@@ -13,9 +13,9 @@ class Customer
     self.cid = cid
 
     if !location.empty?
-      locations << Aceroute::Location.new(*location)
+      locations << Aceroute::Location.new(location[:address1], location[:address2], location[:description],
+      location[:name], location[:phone])
     end
-
   end
 
 
@@ -34,6 +34,7 @@ class Customer
       </cst>
     </data>"
 
+    #puts recs
     data = Aceroute::call_api("customer.create", recs)
     location = data.locs.loc
     customer = data.cnts.cnt
@@ -44,16 +45,16 @@ class Customer
   end
 
 
-
-
-
-  def destroy!
-    req = "<data><del><id>#{self.cid}</id></del></data>"
-    ret = Aceroute::call_api("customer.delete", req)
-    ret.success == "true" ? true : false  #maybe raise error here instead
+  def destroy!(id = nil)
+    Customer.delete(id ? id : self.cid)
   end
 
 
+  def self.delete(id)
+    recs = "<data><del><id>#{id}</id></del></data>"
+    ret = Aceroute::call_api("customer.delete", recs)
+    ret.success == "true" ? true : false
+  end
 
   #private
   #takes a Hashit class, extracts the instance variables, and sets them on our Customer

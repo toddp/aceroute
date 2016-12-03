@@ -43,7 +43,6 @@ describe Aceroute::Order do
 
 
     it "deletes order from Aceroute" do
-      binding.pry
       result = $order_updated.destroy!
       expect(result).to eq true
     end
