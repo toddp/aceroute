@@ -28,8 +28,7 @@ module Aceroute
     customers = []
     res = self.call_api("customer.list", nil)
     res.cnts.cnt.each do |r|
-      c = Aceroute::Customer.new(name: r['nm'], email: r['eml'],
-        cid: r['cid'])
+      c = Aceroute::Customer.new(name: r['nm'], email: r['eml'], cid: r['cid'])
       customers << c
       #find corresponding addresses for this customer
       locations = res.locs.loc.find_all{|l| l["cid"] == c.cid }
@@ -184,7 +183,6 @@ private
     params = @@query_params.merge!({method: method})
     params[:recs] = recs unless recs.nil?
     options = {query: params}
-    #puts "options: " + options.to_s
     http_result = self.get("/api", options).parsed_response
     puts http_result if @@DEBUG
     data = Hashit.new(http_result['data'])
