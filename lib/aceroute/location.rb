@@ -9,12 +9,6 @@ class Location
 
 
   def initialize(address1, address2, description, name, phone, cid = nil, id= nil)
-    binding.pry
-    #create getters/setters for each param
-    #attrs.each do |name,value|
-    #  singleton_class.class_eval {attr_accessor "#{name}"}
-    #   send("#{name}=", value)
-    #end
     self.address1 = address1
     self.address2 = address2
     self.description = description
