@@ -56,6 +56,7 @@ class Customer
     ret.success == "true" ? true : false
   end
 
+
   #private
   #takes a Hashit class, extracts the instance variables, and sets them on our Customer
   def update_attrs(hashit)
