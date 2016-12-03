@@ -2,15 +2,19 @@ require 'rubygems'
 require 'httparty'
 require 'aceroute/hashit'
 require 'aceroute/customer'
-require 'aceroute/address'
+require 'aceroute/location'
+require 'aceroute/order'
 
 module Aceroute
   include HTTParty
-  debug_output $stdout
+  @@DEBUG = true
+  debug_output $stdout if @@DEBUG
   attr_accessor :http_result
+
 
   base_uri 'http://air.aceroute.com'
   @@API_KEY = ENV['ACEROUTE_API_TOKEN']
+
 
   @@query_params = {
     token: @@API_KEY,
@@ -23,13 +27,17 @@ module Aceroute
   def self.list_customers
     customers = []
     res = self.call_api("customer.list", nil)
+    binding.pry
     res.cnts.cnt.each do |r|
-      c = Customer.new(r)
+      c = Aceroute::Customer.new(name: r['nm'], email: r['eml'],
+        cid: r['cid'])
       customers << c
       #find corresponding addresses for this customer
-      addresses = res.locs.loc.find_all{|l| l["cid"] == c.cid }
-      addresses.each do |a|
-        c.addresses << Address.new(a)
+      locations = res.locs.loc.find_all{|l| l["cid"] == c.cid }
+      locations.each do |a|
+        binding.pry
+        c.locations << Aceroute::Location.new(address1: a['adr'], address2: a['adr2'],
+          phone: a['tel'], description: a['nm'])
       end
     end
     customers
@@ -61,9 +69,9 @@ module Aceroute
     </data>"
 
     data = self.call_api("customer.create", recs)
-    address = data.locs.loc
+    location = data.locs.loc
     customer = data.cnts.cnt
-    return customer, address
+    return customer, location
   end
 
 
@@ -161,9 +169,9 @@ module Aceroute
             <po>#{order[:po]}</po>
           </event>
         </data>"
-    puts recs
+    puts recs if @@DEBUG
     data = self.call_api("order.create", recs)
-    puts data
+    puts data if @@DEBUG
     order = data.event
   end
 
@@ -180,7 +188,7 @@ private
     options = {query: params}
     #puts "options: " + options.to_s
     http_result = self.get("/api", options).parsed_response
-    puts http_result
+    puts http_result if @@DEBUG
     data = Hashit.new(http_result['data'])
   end
 
