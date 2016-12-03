@@ -1,51 +1,60 @@
+module Aceroute
 class Customer
-  attr_accessor :addresses
+  attr_accessor :locations
+  attr_accessor :email
+  attr_accessor :name
+  attr_accessor :cid
 
-  def initialize(attrs)
-    self.addresses = []
+  def initialize(name, email, location = {}, cid = nil)
+    self.locations = []
     #create getters/setters for each param
+    self.email = email
+    self.name = name
+    self.cid = cid
 
-    attrs.each do |name,value|
-      singleton_class.class_eval {attr_accessor "#{name}"}
-      send("#{name}=", value)
+    if !location.empty?
+      locations << Aceroute::Location.new(location[:address1], location[:address2], location[:description],
+      location[:name], location[:phone])
     end
   end
 
 
 
-  # @return [Hash] customer and address
+  # @return [Aceroute::Customer]
   def create!
     recs = "<data>
       <cst>
         <nm>#{self.name}</nm>
-        <locnm>#{self.addresses.first.description}</locnm>
-        <adr>#{self.addresses.first.address1}</adr>
-        <adr2>#{self.addresses.first.address2}</adr2>
-        <cntnm>#{self.addresses.first.name}</cntnm>
-        <tel>#{self.addresses.first.phone}</tel>
+        <locnm>#{self.locations.first.description}</locnm>
+        <adr>#{self.locations.first.address1}</adr>
+        <adr2>#{self.locations.first.address2}</adr2>
+        <cntnm>#{self.locations.first.name}</cntnm>
+        <tel>#{self.locations.first.phone}</tel>
         <eml>#{self.email}</eml>
       </cst>
     </data>"
 
+    #puts recs
     data = Aceroute::call_api("customer.create", recs)
-    address = data.locs.loc
+    location = data.locs.loc
     customer = data.cnts.cnt
     update_attrs(customer)
-    addresses.first.update_attrs(address)
+    self.cid = customer.cid
+    locations.first.update_attrs(location)
     return self
   end
 
 
-
-
-
-  def destroy!
-    req = "<data><del><id>#{self.cid}</id></del></data>"
-    ret = Aceroute::call_api("customer.delete", req)
-    ret.success == "true" ? true : false  #maybe raise error here instead
+  def destroy!(id = nil)
+    Customer.delete(id ? id : self.cid)
   end
 
 
+  def self.delete(id)
+    recs = "<data><del><id>#{id}</id></del></data>"
+    ret = Aceroute::call_api("customer.delete", recs)
+    ret.success == "true" ? true : false
+  end
 
   #private
   #takes a Hashit class, extracts the instance variables, and sets them on our Customer
@@ -57,4 +66,5 @@ class Customer
   end
 
 
+end
 end
