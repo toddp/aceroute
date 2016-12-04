@@ -2,7 +2,7 @@ module Aceroute
 class Order
   attr_accessor :customer, :location, :start_time #in msec since epoch
   attr_accessor :description, :duration, :scheduled, :worker, :summary, :purchase_order #any freeform text here
-
+  attr_accessor :cid, :id
 
   def initialize(customer, location, start_time, description = nil, duration = 10,
     scheduled = true, worker = nil, summary = nil, purchase_order = nil)
@@ -56,10 +56,12 @@ class Order
       return self
     end
 
+    def destroy!(id = nil)
+      Order.delete(id ? id : self.id)
+    end
 
-
-    def destroy!
-      req = "<data><del><id>#{self.id}</id></del></data>"
+    def self.delete(id)
+      req = "<data><del><id>#{id}</id></del></data>"
       ret = Aceroute::call_api("order.delete", req)
       ret.success == "true" ? true : false  #maybe raise error here instead
     end

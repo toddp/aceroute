@@ -21,13 +21,14 @@ describe Aceroute::Location do
     end
 
     it "saves Location to Aceroute" do
-      $location_updated = @location.create!
-      expect($location_updated.instance_of?(Aceroute::Location)).to be true
-      #expect(Aceroute).to have_received(:call_api).with("customer.create")
+      expect(@location.id).to be nil
+      @location.create!
+      expect(@location.id).to_not be nil
+      #expect(Aceroute).to have_received(:call_api).with("location.create")
     end
 
     it "deletes Location from Aceroute" do
-      result = $location_updated.destroy!
+      result = @location.destroy!
       expect(result).to eq true
     end
 

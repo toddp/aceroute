@@ -7,7 +7,7 @@ require 'aceroute/order'
 
 module Aceroute
   include HTTParty
-  @@DEBUG = false
+  @@DEBUG = true
   debug_output $stdout if @@DEBUG
   attr_accessor :http_result
 

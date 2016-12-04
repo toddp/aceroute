@@ -36,19 +36,16 @@ describe Aceroute::Order do
     end
 
     it "saves order to Aceroute" do
-      $order_updated = @order.create!
-      expect($order_updated.instance_of?(Aceroute::Order)).to be true
-      #expect(Aceroute).to have_received(:call_api).with("customer.create")
+      #id will be set by data returned from aceroute
+      expect(@order.id).to be nil
+      @order.create!
+      expect(@order.id).to_not be nil
     end
-
 
     it "deletes order from Aceroute" do
-      result = $order_updated.destroy!
+      result = @order.destroy!
       expect(result).to eq true
     end
-
-
-
 
   end
 end
