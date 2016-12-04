@@ -34,6 +34,13 @@ api key:
 
 See the documentation on [Aceroute classes and  methods](http://toddp.github.io/aceroute/) for which ones you can call.
 
+There are classes corrsponding to each entity in the Aceroute API, such as Customer, Location, and Order. So far these 3 are the only supported entities, others will be added as needed.
+
+You can create a new entity by instantiating it with .new(), but it will only be persisted to the Aceroute API when you call .create!  See Customer class for an example.
+
+Likewise, you can delete any instance by calling .destroy! . Alternatively, you can call the class method .delete(id) and passing any valid Aceroute id for that type of object, e.g. a Customer id.
+
+
 
 
 ## Development
