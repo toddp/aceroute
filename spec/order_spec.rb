@@ -7,7 +7,6 @@ describe Aceroute::Order do
       @location = Aceroute::Location.new(
       "555 Sesame St", "#123", "Big Bird's House", "home",
       "5551234", "330001")
-      @location.create!
 
       @customer = Aceroute::Customer.new(
       "Big Bird", "big@bird.com")

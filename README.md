@@ -3,10 +3,10 @@
 This gem implements the [Aceroute API](http://aceroute.com)
 
 Aceroute is a SaaS application for field management. Aceroute allows you to
-schedule customer visits, optimize driving routes and more. 
+schedule customer visits, optimize driving routes and more.
 
 
-This library is still very early and very much under development. 
+This library is still very early and very much under development.
 
 ## Installation
 
@@ -26,13 +26,13 @@ Or install it yourself as:
 
 ## Usage
 
-First set the ACEROUTE_API_TOKEN environment variable to contain your Aceroute 
-api key: 
+First set the ACEROUTE_API_TOKEN environment variable to contain your Aceroute
+api key:
 
     export ACEROUTE_API_TOKEN=mytoken
 
 
-See the documentation on [Aceroute class methods](http://toddp.github.io/aceroute/) for which ones you can call.
+See the documentation on [Aceroute classes and  methods](http://toddp.github.io/aceroute/) for which ones you can call.
 
 
 
