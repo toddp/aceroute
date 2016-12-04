@@ -1,9 +1,26 @@
 module Aceroute
-class Order
-  attr_accessor :customer, :location, :start_time #in msec since epoch
+class Order < Base
+  attr_accessor :customer, :location, :start_time #in msec (not sec) since epoch
   attr_accessor :description, :duration, :scheduled, :worker, :summary, :purchase_order #any freeform text here
+  attr_accessor :cid, :id
 
 
+
+
+
+  #Creates a new Aceroute::Order object. Note this does not
+  #persist the Location to Aceroute, that can be done by calling the
+  #create! method on the new object.
+  # @param customer [Aceroute::Customer] recipient of this Order
+  # @param location [Aceroute::Location] location of this Order (delivery destination)
+  # @param start_time [Integer] start time of Order, in msec since epoch (note: msec not sec)
+  # @param description [String] description of Order (e.g., contents of order)
+  # @param duration [Integer] duration of Order in minutes (time to service customer); used to aid in route optimization. Defaults to 10 minutes
+  # @param scheduled [Boolean] whether this Order is scheduled or not; defaults to true
+  # @param worker [Integer] Worker ID of aceroute worker to assign this Order to; defaults to nil (not implemented)
+  # @param summary [String] Summary of order, to be displated in app. Defaults to none.
+  # @param purchase_order [String] arbitrary string to indicate PO or other note, if needed
+  # @return [Aceroute::Order]
   def initialize(customer, location, start_time, description = nil, duration = 10,
     scheduled = true, worker = nil, summary = nil, purchase_order = nil)
     self.customer = customer
@@ -21,20 +38,8 @@ class Order
 
 
 
-
-    # Create new order
-    # @param order [Hash]
-    #   * :cid (Integer) Aceroute customer id
-    #   * :nm (String) 'name', descriptive field for this order
-    #   * :dir (Integer) 'duration', in 5 minute increments
-    #   * :sched (Integer) 1 = scheduled, 0 = unscheduled
-    #   * :start_epoch (Integer) time in msec since epoch
-    #   * :lid (Integer) optional -- customer location id
-    #   * :cntid (Integer) optional -- customer contact id
-    #   * :rid (Integer) optional -- worker id, to assign this order to a specific worker
-    #   * :dtl (String) optional -- order summary
-    #   * po (String) optional -- 'purchase order', descriptive field for use as desired
-    # @return [Order] order
+    # Persists Aceroute::Order object to Aceroute API.
+    # @return [Aceroute::Order]
     def create!
       recs = "<data>
             <event>
@@ -57,23 +62,19 @@ class Order
     end
 
 
+    # Deletes this Aceroute::Order object (self) from Aceroute
+    def destroy!(id = nil)
+      Order.delete(id ? id : self.id)
+    end
 
-    def destroy!
-      req = "<data><del><id>#{self.id}</id></del></data>"
+
+    # Deletes Aceroute::Location of given id from Aceroute
+    # @param id [Integer]
+    def self.delete(id)
+      req = "<data><del><id>#{id}</id></del></data>"
       ret = Aceroute::call_api("order.delete", req)
       ret.success == "true" ? true : false  #maybe raise error here instead
     end
-
-
-    #private
-    #takes a Hashit class, extracts the instance variables, and sets them on our Customer
-    def update_attrs(hashit)
-      hashit.instance_variables.each do |name|
-        singleton_class.class_eval {attr_accessor "#{name[1..-1]}"} #remove leading @ from varname
-        send("#{name[1..-1]}=", hashit.instance_variable_get(name))
-      end
-    end
-
 
 
 end

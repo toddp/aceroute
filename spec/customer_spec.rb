@@ -25,14 +25,14 @@ describe "create a new Customer" do
     #allow(Aceroute).to receive(:call_api).with("customer.create", /.*/).and_return(nil)
   end
   it "saves customer to Aceroute" do
-    $customer_updated = @customer.create!
-    expect($customer_updated.instance_of?(Aceroute::Customer)).to be true
+    expect(@customer.id).to be nil
+    @customer.create!
+    expect(@customer.id).to_not be nil
     #expect(Aceroute).to have_received(:call_api).with("customer.create")
   end
 
-
   it "deletes customer from Aceroute" do
-    result = $customer_updated.destroy!
+    result = @customer.destroy!
     expect(result).to eq true
   end
 

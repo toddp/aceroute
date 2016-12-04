@@ -94,8 +94,21 @@ Aceroute api key:</p>
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_export'>export</span> <span class='const'>ACEROUTE_API_TOKEN</span><span class='op'>=</span><span class='id identifier rubyid_mytoken'>mytoken</span>
 </code></pre>
 
-<p>See the documentation on <a href="doc/Aceroute.html">Aceroute class
-methods</a> for which ones you can call.</p>
+<p>See the documentation on <a
+href="http://toddp.github.io/aceroute/">Aceroute classes and methods</a>
+for which ones you can call.</p>
+
+<p>There are classes corrsponding to each entity in the Aceroute API, such as
+Customer, Location, and Order. So far these 3 are the only supported
+entities, others will be added as needed.</p>
+
+<p>You can create a new entity by instantiating it with .new(), but it will
+only be persisted to the Aceroute API when you call .create! See Customer
+class for an example.</p>
+
+<p>Likewise, you can delete any instance by calling .destroy! . Alternatively,
+you can call the class method .delete(id) and passing any valid Aceroute id
+for that type of object, e.g. a Customer id.</p>
 
 <h2 id="label-Development">Development</h2>
 
@@ -134,9 +147,9 @@ href="http://revolunet.mit-license.org/">MIT License</a>.</p>
 </div></div>
 
     <div id="footer">
-  Generated on Sat Apr  2 11:41:43 2016 by
+  Generated on Sun Dec  4 11:17:51 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.4).
+  0.8.7.6 (ruby-2.3.1).
 </div>
 
   </body>
