@@ -1,5 +1,5 @@
 module Aceroute
-class Location
+class Location < Base
   attr_accessor :address1
   attr_accessor :address2
   attr_accessor :description
@@ -44,16 +44,6 @@ class Location
     ret = Aceroute::call_api("customer.location.delete", req)
     ret.success == "true" ? true : false  #maybe raise error here instead
   end
-
-  #private
-  #takes a Hashit class, extracts the instance variables, and sets them on our Customer
-  def update_attrs(hashit)
-    hashit.instance_variables.each do |name|
-      singleton_class.class_eval {attr_accessor "#{name[1..-1]}"} #remove leading @ from varname
-      send("#{name[1..-1]}=", hashit.instance_variable_get(name))
-    end
-  end
-
 
 end
 end

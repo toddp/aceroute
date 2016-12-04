@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'httparty'
+require 'aceroute/base'
 require 'aceroute/hashit'
 require 'aceroute/customer'
 require 'aceroute/location'

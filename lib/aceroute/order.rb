@@ -1,6 +1,6 @@
 module Aceroute
-class Order
-  attr_accessor :customer, :location, :start_time #in msec since epoch
+class Order < Base
+  attr_accessor :customer, :location, :start_time #in msec (not sec) since epoch
   attr_accessor :description, :duration, :scheduled, :worker, :summary, :purchase_order #any freeform text here
   attr_accessor :cid, :id
 
@@ -65,17 +65,6 @@ class Order
       ret = Aceroute::call_api("order.delete", req)
       ret.success == "true" ? true : false  #maybe raise error here instead
     end
-
-
-    #private
-    #takes a Hashit class, extracts the instance variables, and sets them on our Customer
-    def update_attrs(hashit)
-      hashit.instance_variables.each do |name|
-        singleton_class.class_eval {attr_accessor "#{name[1..-1]}"} #remove leading @ from varname
-        send("#{name[1..-1]}=", hashit.instance_variable_get(name))
-      end
-    end
-
 
 
 end
